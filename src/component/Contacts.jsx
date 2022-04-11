@@ -45,11 +45,12 @@ const Contacts = () => {
         if (contact.id === isUpdate.id) {
           contact.name = formData.name;
           contact.telp = formData.telp;
+          alert("ok");
         }
       });
     } else {
       data.push({ id: uid(), name: formData.name, telp: formData.telp });
-      alert("oke");
+      alert("Data simpan");
     }
     //add contact
     setIsUpdate({ id: null, status: false });
