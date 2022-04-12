@@ -12,6 +12,7 @@ Enter the project.
 
 ```bash
 cd react-crud-api
+git checkout crud-local-api
 ```
 
 Use [npm](https://www.npmjs.com/) to install dependencies.
