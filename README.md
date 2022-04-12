@@ -12,7 +12,6 @@ Enter the project.
 
 ```bash
 cd react-crud-api
-git checkout crud-local-api
 ```
 
 Use [npm](https://www.npmjs.com/) to install dependencies.
@@ -23,14 +22,20 @@ npm i
 
 ## ☄️ Usage
 
-1. RUN JSON SERVER
+1. CHECKOUT BRANCH 
+
+```bash
+git checkout crud-local-api
+```
+
+2. RUN JSON SERVER
 
 ```bash
 json-server --watch contacts.json
 ```
 Open http://localhost:3000/contacts to view data json in your browser
 
-1. RUN The App
+3. RUN The App
 
 ```bash
 npm run dev
