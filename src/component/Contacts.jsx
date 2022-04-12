@@ -1,26 +1,25 @@
+import axios from "axios";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { uid } from "uid";
-import List from "./List";
+import List from "./TableContacts";
+import swal from "sweetalert";
 
 const Contacts = () => {
-  const [contacts, setContacts] = useState([
-    {
-      id: 1,
-      name: "Tania",
-      telp: "087654342",
-    },
-    {
-      id: 2,
-      name: "Yunita",
-      telp: "087654342",
-    },
-  ]);
+  const [contacts, setContacts] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     telp: "",
   });
   const [isUpdate, setIsUpdate] = useState({ id: null, status: false });
+
+  //get data
+  useEffect(() => {
+    axios.get("http://localhost:3000/contacts").then((res) => {
+      console.log(res.data);
+      setContacts(res?.data ?? []);
+    });
+  }, []);
 
   const handleChange = (e) => {
     let data = { ...formData };
@@ -31,12 +30,12 @@ const Contacts = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     let data = [...contacts];
 
     if (formData.name === "" || formData.telp === "") {
-      alert("tidak boleh ada data boleh kosong")
-      return false
+      alert("tidak boleh ada data boleh kosong");
+      return false;
     }
 
     //pengecekan edit
@@ -45,14 +44,23 @@ const Contacts = () => {
         if (contact.id === isUpdate.id) {
           contact.name = formData.name;
           contact.telp = formData.telp;
-          alert("ok");
+
+          let newData = { name: formData.name, telp: formData.telp };
+          axios
+            .put(`http://localhost:3000/contacts/${isUpdate.id}`, newData)
+            .then((res) => {
+              swal("Berhasil", "Data telah diperbaharui", "success");
+            });
         }
       });
     } else {
-      data.push({ id: uid(), name: formData.name, telp: formData.telp });
-      alert("Data simpan");
+      let newData = { id: uid(), name: formData.name, telp: formData.telp };
+      data.push(newData);
+      axios.post("http://localhost:3000/contacts", newData).then((res) => {
+        swal("Berhasil", "Data telah ditambahkan", "success");
+      });
     }
-    //add contact
+
     setIsUpdate({ id: null, status: false });
     setContacts(data);
     setFormData({ name: "", telp: "" });
@@ -65,16 +73,29 @@ const Contacts = () => {
     let foundData = data.find((contact) => contact.id === id);
     setFormData({ name: foundData.name, telp: foundData.telp });
     setIsUpdate({ id: id, status: true });
+    console.log(formData);
+    console.log(foundData);
+    console.log("Data nama >>", foundData.name);
+    console.log("Data Telp >>", foundData.telp);
   };
 
   const handleDelete = (id) => {
     let data = [...contacts];
     let filterData = data.filter((contact) => contact.id !== id);
+    const message = "Yakin akan menghapus data?";
+    if (confirm(message) == true) {
+      axios.delete(`http://localhost:3000/contacts/${id}`).then((res) => {
+        swal("Berhasil", "Data telah dihapus", "success");
+      });
+    } else {
+      return false;
+    }
+
     setContacts(filterData);
   };
   return (
     <div className="container-sm">
-      <h1 className="px-3 py-3">My Contact List</h1>
+      <h1 className="px-3 py-3 text-center">Data Contact Number</h1>
 
       <form className="px-3 py-4" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -90,7 +111,7 @@ const Contacts = () => {
         <div className="form-group mt-3">
           <label htmlFor="">No. Telp</label>
           <input
-            type="text"
+            type="number"
             className="form-control"
             name="telp"
             value={formData.telp}
@@ -98,7 +119,7 @@ const Contacts = () => {
           />
         </div>
         <div>
-          <button type="submit" className="btn btn-primary w-100 mt-3">
+          <button type="submit" className="btn btn-success w-100 mt-3">
             Save
           </button>
         </div>
