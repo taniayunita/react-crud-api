@@ -1,12 +1,15 @@
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap/dist/js/bootstrap.js";
-import TableComponent from "./component/TableComponent";
+// import "bootstrap/dist/css/bootstrap.css";
+// import "bootstrap/dist/js/bootstrap.js";
+import Home from "./pages/Home";
+import {Routes, Route} from "react-router-dom"
 
 function App() {
 
   return (
     <>
-      <TableComponent />
+    <Routes>
+      <Route exact path="/" element={<Home/>}/>
+    </Routes>
     </>
   );
 }

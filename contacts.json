@@ -1,0 +1,16 @@
+{
+    "contacts": [
+        {
+            "id": 1,
+            "nama": "Tania Yunita",
+            "email": "taniayunita22@gmail.com",
+            "no_telp": "089789890909"
+        },
+        {
+            "id": 2,
+            "nama": "Raisa Yunita",
+            "email": "raisayunita22@gmail.com",
+            "no_telp": "089789890909"
+        }
+    ]
+}
